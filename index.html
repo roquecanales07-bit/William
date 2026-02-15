@@ -7,15 +7,19 @@
     <style>
         body { margin: 0; padding: 0; background-color: #000; color: white; font-family: 'Arial', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
         
+        /* INICIO CON MENSAJE EN INGLÉS */
         #inicio { text-align: center; z-index: 100; transition: opacity 0.8s; }
-        .nombre { font-size: 50px; font-weight: bold; margin-bottom: 20px; letter-spacing: 3px; }
+        .nombre { font-size: 55px; font-weight: bold; margin-bottom: 5px; letter-spacing: 3px; }
+        .subtitulo { font-size: 20px; color: #ffeb3b; margin-bottom: 25px; font-style: italic; }
         .btn { background: #fff; color: #000; border: none; padding: 15px 40px; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 18px; box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); }
 
-        #letras { position: absolute; text-align: center; width: 85%; font-size: 26px; font-weight: bold; text-shadow: 0 0 10px rgba(255,255,255,0.5); z-index: 50; line-height: 1.5; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
+        /* LETRAS AJUSTADAS */
+        #letras { position: absolute; text-align: center; width: 85%; font-size: 28px; font-weight: bold; text-shadow: 0 0 10px rgba(255,255,255,0.5); z-index: 50; line-height: 1.5; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
 
+        /* FOTO MÁS GRANDE Y DEDICATORIA ABAJO */
         #contenedor-foto { display: none; opacity: 0; transform: scale(0.5); transition: all 2s ease-out; z-index: 60; text-align: center; }
-        .foto-william { width: 280px; height: 350px; border-radius: 20px; border: 5px solid white; object-fit: cover; box-shadow: 0 0 30px rgba(255,255,255,0.3); }
-        .mensaje-final { margin-top: 20px; font-size: 24px; font-weight: bold; color: #32CD32; }
+        .foto-william { width: 320px; height: 400px; border-radius: 20px; border: 5px solid white; object-fit: cover; box-shadow: 0 0 30px rgba(255,255,255,0.3); }
+        .dedicatoria { margin-top: 20px; font-size: 22px; font-weight: bold; color: #fff; max-width: 350px; line-height: 1.4; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
         canvas { position: absolute; top: 0; left: 0; pointer-events: none; }
     </style>
@@ -24,6 +28,7 @@
 
     <div id="inicio">
         <div class="nombre">WILLIAM 💗</div>
+        <div class="subtitulo">Happy Valentine's Day!</div>
         <button class="btn" onclick="comenzar()">CLICK AQUÍ</button>
     </div>
 
@@ -31,19 +36,18 @@
 
     <div id="contenedor-foto">
         <img src="foto_william.jpg" alt="William" class="foto-william">
-        <div class="mensaje-final">Happy Valentine's Day! 💗</div>
+        <div class="dedicatoria">Te quiero mi niño bonito, gracias por hacer feliz mi vida. 💗</div>
     </div>
 
     <canvas id="canvasCorazones"></canvas>
     <audio id="musica" src="musica.mp3"></audio>
 
     <script>
+        // Tiempos ajustados: empieza 1 segundo después del click
         const frases = [
-            { t: 2, texto: "Te siento al cantar y al escuchar cualquier canción" },
-            { t: 7, texto: "Bonita que hable del amor, de lo que siento ayer y hoy" },
-            { t: 13, texto: "Siempre te llevo al despertar" },
-            // Agregamos tu frase especial al final de la canción
-            { t: 18, texto: "Te quiero mi niño bonito, gracias por hacer feliz mi vida. 💗" }
+            { t: 1, texto: "Te siento al cantar y al escuchar cualquier canción" },
+            { t: 6, texto: "Bonita que hable del amor, de lo que siento ayer y hoy" },
+            { t: 12, texto: "Siempre te llevo al despertar" }
         ];
 
         function comenzar() {
@@ -66,15 +70,15 @@
                         letrasDiv.style.opacity = '1';
                     }, 500);
                     
-                    // Al terminar la última frase (tu dedicatoria), se muestra la foto
+                    // Al terminar la letra, esperamos y mostramos la foto + dedicatoria
                     if (index === frases.length - 1) {
                         setTimeout(() => {
                             letrasDiv.style.opacity = '0';
                             setTimeout(() => {
                                 letrasDiv.style.display = 'none';
                                 mostrarFoto(fotoDiv);
-                            }, 1500);
-                        }, 5000); // Tiempo para leer la frase final
+                            }, 1000);
+                        }, 4000);
                     }
                 }, linea.t * 1000);
             });
@@ -138,11 +142,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
