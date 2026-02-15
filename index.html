@@ -14,13 +14,46 @@
 
         #letras { position: absolute; text-align: center; width: 85%; font-size: 28px; font-weight: bold; text-shadow: 0 0 10px rgba(255,255,255,0.5); z-index: 50; line-height: 1.5; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
 
-        /* FOTO PEQUEÑA Y SIN MARCO */
-        #contenedor-foto { display: none; opacity: 0; transform: scale(0.6); transition: all 1.5s ease-out; z-index: 60; text-align: center; }
-        .foto-william { width: 250px; height: 320px; border-radius: 15px; border: none; object-fit: cover; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        /* CONTENEDOR LADO A LADO */
+        #contenedor-foto { 
+            display: none; 
+            opacity: 0; 
+            z-index: 60; 
+            flex-direction: row; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 30px; 
+            width: 90%; 
+            max-width: 800px;
+            transition: all 2s ease-out;
+        }
+
+        .foto-william { 
+            width: 250px; 
+            height: auto; 
+            border-radius: 15px; 
+            border: none; 
+            object-fit: contain; 
+            box-shadow: 0 0 20px rgba(255,255,255,0.1); 
+        }
         
-        .dedicatoria { margin-top: 15px; font-size: 20px; font-weight: bold; color: #fff; max-width: 300px; margin-left: auto; margin-right: auto; line-height: 1.4; text-shadow: 0 0 8px rgba(255,255,255,0.3); }
+        .dedicatoria { 
+            font-size: 22px; 
+            font-weight: bold; 
+            color: #fff; 
+            max-width: 300px; 
+            text-align: left;
+            line-height: 1.4; 
+            text-shadow: 0 0 10px rgba(255,255,255,0.3); 
+        }
 
         canvas { position: absolute; top: 0; left: 0; pointer-events: none; }
+
+        /* Ajuste para móviles */
+        @media (max-width: 600px) {
+            #contenedor-foto { flex-direction: column; }
+            .dedicatoria { text-align: center; }
+        }
     </style>
 </head>
 <body>
@@ -42,7 +75,6 @@
     <audio id="musica" src="musica.mp3"></audio>
 
     <script>
-        // Tiempos más rápidos (ajustados 1-2 segundos antes)
         const frases = [
             { t: 0.8, texto: "Te siento al cantar y al escuchar cualquier canción" },
             { t: 5.5, texto: "Bonita que hable del amor, de lo que siento ayer y hoy" },
@@ -83,10 +115,9 @@
         }
 
         function mostrarFoto(div) {
-            div.style.display = 'block';
+            div.style.display = 'flex'; // Usamos flex para el diseño lado a lado
             setTimeout(() => {
                 div.style.opacity = '1';
-                div.style.transform = 'scale(1)';
             }, 100);
         }
 
