@@ -7,22 +7,21 @@
     <style>
         body { margin: 0; padding: 0; background-color: #000; color: white; font-family: 'Arial', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
         
-        /* INICIO PERSONALIZADO */
+        /* INICIO */
         #inicio { text-align: center; z-index: 100; transition: opacity 0.8s; }
         .nombre { font-size: 55px; font-weight: bold; margin-bottom: 5px; letter-spacing: 3px; }
-        .subtitulo { font-size: 22px; color: #ffeb3b; margin-bottom: 30px; font-style: italic; }
-        .btn { background: #fff; color: #000; border: none; padding: 18px 45px; border-radius: 40px; cursor: pointer; font-weight: bold; font-size: 20px; box-shadow: 0 0 25px rgba(255, 255, 255, 0.3); transition: transform 0.2s; }
-        .btn:active { transform: scale(0.95); }
+        .subtitulo { font-size: 20px; color: #ffeb3b; margin-bottom: 30px; font-style: italic; }
+        .btn { background: #fff; color: #000; border: none; padding: 15px 40px; border-radius: 40px; cursor: pointer; font-weight: bold; font-size: 18px; box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
 
-        /* LETRAS MÁS LENTAS Y LEGIBLES */
-        #letras { position: absolute; text-align: center; width: 90%; font-size: 30px; font-weight: bold; text-shadow: 0 0 15px rgba(255,255,255,0.6); z-index: 50; line-height: 1.6; pointer-events: none; opacity: 0; transition: opacity 1s; }
+        /* LETRAS (VELOCIDAD AJUSTADA) */
+        #letras { position: absolute; text-align: center; width: 85%; font-size: 28px; font-weight: bold; text-shadow: 0 0 10px rgba(255,255,255,0.5); z-index: 50; line-height: 1.5; pointer-events: none; opacity: 0; transition: opacity 0.7s; }
 
-        /* FOTO GRANDE, COMPLETA Y SIN MARCO */
-        #contenedor-foto { display: none; opacity: 0; transform: scale(0.8); transition: all 2.5s ease-in-out; z-index: 60; text-align: center; width: 100%; }
-        .foto-william { width: 90%; max-width: 450px; height: auto; border-radius: 15px; object-fit: contain; filter: drop-shadow(0 0 20px rgba(255,255,255,0.2)); }
+        /* FOTO (TAMAÑO ANTERIOR Y SIN MARCO) */
+        #contenedor-foto { display: none; opacity: 0; transform: scale(0.6); transition: all 2s ease-out; z-index: 60; text-align: center; }
+        .foto-william { width: 280px; height: 350px; border-radius: 20px; border: none; object-fit: cover; box-shadow: 0 0 25px rgba(255,255,255,0.1); }
         
-        /* DEDICATORIA FINAL */
-        .dedicatoria { margin-top: 25px; font-size: 24px; font-weight: bold; color: #fff; padding: 0 20px; line-height: 1.4; text-shadow: 0 0 10px rgba(255,255,255,0.4); }
+        /* FRASE DEBAJO DE LA FOTO */
+        .dedicatoria { margin-top: 20px; font-size: 22px; font-weight: bold; color: #fff; max-width: 320px; line-height: 1.4; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
         canvas { position: absolute; top: 0; left: 0; pointer-events: none; }
     </style>
@@ -46,11 +45,11 @@
     <audio id="musica" src="musica.mp3"></audio>
 
     <script>
-        // Tiempos ajustados para que la letra vaya más lenta
+        // Tiempos equilibrados (un poco menos lentos que antes)
         const frases = [
-            { t: 1.5, texto: "Te siento al cantar y al escuchar cualquier canción" },
-            { t: 8.5, texto: "Bonita que hable del amor, de lo que siento ayer y hoy" },
-            { t: 16.0, texto: "Siempre te llevo al despertar" }
+            { t: 1.2, texto: "Te siento al cantar y al escuchar cualquier canción" },
+            { t: 7.0, texto: "Bonita que hable del amor, de lo que siento ayer y hoy" },
+            { t: 13.5, texto: "Siempre te llevo al despertar" }
         ];
 
         function comenzar() {
@@ -71,7 +70,7 @@
                     setTimeout(() => {
                         letrasDiv.innerHTML = linea.texto;
                         letrasDiv.style.opacity = '1';
-                    }, 1000); // Aparece más suavemente
+                    }, 400);
                     
                     if (index === frases.length - 1) {
                         setTimeout(() => {
@@ -79,8 +78,8 @@
                             setTimeout(() => {
                                 letrasDiv.style.display = 'none';
                                 mostrarFoto(fotoDiv);
-                            }, 2000);
-                        }, 6000); // Se queda más tiempo en pantalla
+                            }, 1200);
+                        }, 4500); 
                     }
                 }, linea.t * 1000);
             });
@@ -91,7 +90,7 @@
             setTimeout(() => {
                 div.style.opacity = '1';
                 div.style.transform = 'scale(1)';
-            }, 150);
+            }, 100);
         }
 
         function iniciarCorazones() {
@@ -107,7 +106,7 @@
                     this.x = Math.random() * canvas.width;
                     this.y = canvas.height + 20;
                     this.size = Math.random() * 15 + 10;
-                    this.speed = Math.random() * 1.5 + 0.8; // Corazones un poco más lentos y románticos
+                    this.speed = Math.random() * 2 + 1;
                     this.color = colores[Math.floor(Math.random() * colores.length)];
                 }
                 dibujar() {
@@ -125,13 +124,13 @@
                 }
                 update() {
                     this.y -= this.speed;
-                    this.x += Math.sin(this.y / 60) * 0.5;
+                    this.x += Math.sin(this.y / 50) * 0.5;
                 }
             }
 
             function animar() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                if (partículas.length < 40 && Math.random() < 0.08) partículas.push(new Corazon());
+                if (partículas.length < 50 && Math.random() < 0.1) partículas.push(new Corazon());
                 partículas.forEach((p, i) => {
                     p.update();
                     p.dibujar();
