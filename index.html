@@ -5,108 +5,137 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para William 💗</title>
     <style>
-        body { margin: 0; padding: 0; background-color: black; color: white; font-family: 'Courier New', Courier, monospace; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
-        #inicio { text-align: center; transition: opacity 1.5s; z-index: 100; }
-        .nombre { font-size: clamp(40px, 8vw, 70px); font-weight: bold; color: white; letter-spacing: 5px; margin-bottom: 10px; }
-        .btn { background: white; color: black; border: none; padding: 12px 40px; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 16px; }
-        #pantalla-regalo { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; }
-        #letras { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 80%; text-align: center; font-size: 22px; z-index: 50; text-shadow: 0 0 15px rgba(255,255,255,0.6); }
-        #contenedor-foto { position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); z-index: 60; opacity: 0; transition: opacity 2s; }
-        .foto-william { width: 200px; height: 200px; border-radius: 15px; border: 3px solid white; object-fit: cover; }
-        canvas { display: block; position: absolute; top: 0; left: 0; }
+        body { margin: 0; padding: 0; background-color: #000; color: white; font-family: 'Arial', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        
+        #inicio { text-align: center; z-index: 100; transition: opacity 0.8s; }
+        .nombre { font-size: 50px; font-weight: bold; margin-bottom: 20px; letter-spacing: 3px; }
+        .btn { background: #ffeb3b; color: #000; border: none; padding: 15px 40px; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 18px; box-shadow: 0 0 20px rgba(255, 235, 59, 0.4); }
+
+        #letras { position: absolute; text-align: center; width: 85%; font-size: 26px; font-weight: bold; text-shadow: 0 0 10px rgba(255,255,255,0.5); z-index: 50; line-height: 1.5; }
+
+        #contenedor-foto { display: none; opacity: 0; transform: scale(0.5); transition: all 2s ease-out; z-index: 60; text-align: center; }
+        .foto-william { width: 280px; height: 350px; border-radius: 20px; border: 5px solid white; object-fit: cover; box-shadow: 0 0 30px rgba(255,255,255,0.3); }
+        .mensaje-final { margin-top: 20px; font-size: 24px; font-weight: bold; color: #ffeb3b; }
+
+        canvas { position: absolute; top: 0; left: 0; pointer-events: none; }
     </style>
 </head>
 <body>
 
     <div id="inicio">
         <div class="nombre">WILLIAM 💗</div>
-        <p>Happy Valentine's Day</p>
-        <button class="btn" onclick="comenzar()">CLICK AQUÍ</button>
+        <button class="btn" onclick="comenzar()">VER SORPRESA</button>
     </div>
 
-    <div id="pantalla-regalo">
-        <div id="letras"></div>
-        <div id="contenedor-foto">
-            <img src="foto_william.jpg" alt="William" class="foto-william">
-        </div>
-        <canvas id="canvasFlores"></canvas>
+    <div id="letras"></div>
+
+    <div id="contenedor-foto">
+        <img src="foto_william.jpg" alt="William" class="foto-william">
+        <div class="mensaje-final">¡Feliz San Valentín! 🌻</div>
     </div>
 
+    <canvas id="canvasFlores"></canvas>
     <audio id="musica" src="musica.mp3"></audio>
 
     <script>
-        const letra = [
-            { t: 1, m: "Te siento al cantar y al escuchar cualquier canción" },
-            { t: 5, m: "Bonita que hable del amor" },
-            { t: 9, m: "De lo que siento ayer y hoy" },
-            { t: 13, m: "Siempre te llevo al despertar" },
-            { t: 17, m: "Te vi a los ojos bien..." },
-            { t: 20, m: "Sentí cariño fiel" },
-            { t: 24, m: "Si me rompiera aquí" },
-            { t: 27, m: "Esperaría por ti" },
-            { t: 31, m: "Feliz San Valentín, William 💗" }
+        // Aquí están las frases exactas que pediste
+        const frases = [
+            { t: 2, texto: "Te siento al cantar y al escuchar cualquier canción" },
+            { t: 7, texto: "Bonita que hable del amor," },
+            { t: 10, texto: "de lo que siento ayer y hoy" },
+            { t: 14, texto: "Siempre te llevo al despertar" }
         ];
 
         function comenzar() {
             const audio = document.getElementById('musica');
-            document.getElementById('inicio').style.opacity = '0';
+            const inicio = document.getElementById('inicio');
+            const letrasDiv = document.getElementById('letras');
+            const fotoDiv = document.getElementById('contenedor-foto');
+
+            inicio.style.opacity = '0';
+            setTimeout(() => inicio.style.display = 'none', 800);
             
-            audio.play().then(() => {
+            audio.play();
+            iniciarFlores();
+
+            frases.forEach((linea) => {
                 setTimeout(() => {
-                    document.getElementById('inicio').style.display = 'none';
-                    document.getElementById('pantalla-regalo').style.display = 'block';
-                    iniciarAnimacion();
-                }, 1000);
-            }).catch(e => {
-                alert("Haz clic de nuevo o revisa que 'musica.mp3' esté en la carpeta.");
+                    letrasDiv.innerHTML = linea.texto;
+                    
+                    // Al llegar a la última frase, mostramos la foto
+                    if (linea.texto === "Siempre te llevo al despertar") {
+                        setTimeout(() => {
+                            letrasDiv.style.opacity = '0';
+                            setTimeout(() => {
+                                letrasDiv.style.display = 'none';
+                                mostrarFoto(fotoDiv);
+                            }, 1000);
+                        }, 4000); // Tiempo que se queda la última frase en pantalla
+                    }
+                }, linea.t * 1000);
             });
         }
 
-        function iniciarAnimacion() {
+        function mostrarFoto(div) {
+            div.style.display = 'block';
+            setTimeout(() => {
+                div.style.opacity = '1';
+                div.style.transform = 'scale(1)';
+            }, 100);
+        }
+
+        function iniciarFlores() {
             const canvas = document.getElementById('canvasFlores');
             const ctx = canvas.getContext('2d');
-            const audio = document.getElementById('musica');
-            const divLetras = document.getElementById('letras');
-            const contenedorFoto = document.getElementById('contenedor-foto');
-            
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            let flores = [];
+            let partículas = [];
 
             class Flor {
                 constructor() {
                     this.x = Math.random() * canvas.width;
-                    this.y = canvas.height + 50;
-                    this.size = Math.random() * 10 + 5;
-                    this.speed = Math.random() * 2 + 1;
-                    this.color = ["#BFFF00", "#007FFF", "#FFFFFF"][Math.floor(Math.random() * 3)];
+                    this.y = canvas.height + 20;
+                    this.size = Math.random() * 12 + 8;
+                    this.speed = Math.random() * 1.5 + 1;
+                    this.angle = Math.random() * 6;
+                    this.spin = Math.random() * 0.04 - 0.02;
                 }
                 dibujar() {
-                    ctx.fillStyle = this.color;
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.angle);
+                    ctx.fillStyle = "#FFEB3B"; // Pétalos amarillos
+                    for (let i = 0; i < 5; i++) {
+                        ctx.beginPath();
+                        ctx.ellipse(0, -this.size/2, this.size/2, this.size, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.rotate((Math.PI * 2) / 5);
+                    }
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = "#795548"; // Centro café
+                    ctx.arc(0, 0, this.size/3, 0, Math.PI * 2);
                     ctx.fill();
+                    ctx.restore();
                 }
-                update() { this.y -= this.speed; }
+                update() {
+                    this.y -= this.speed;
+                    this.angle += this.spin;
+                    this.x += Math.sin(this.y / 60) * 0.5;
+                }
             }
 
-            function loop() {
+            function animar() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let actual = letra.findLast(f => audio.currentTime >= f.t);
-                if(actual) divLetras.innerText = actual.m;
-                if(audio.currentTime >= 31) contenedorFoto.style.opacity = '1';
-
-                if(Math.random() < 0.1) flores.push(new Flor());
-                flores.forEach((f, i) => {
+                if (partículas.length < 40 && Math.random() < 0.08) partículas.push(new Flor());
+                partículas.forEach((f, i) => {
                     f.update();
                     f.dibujar();
-                    if(f.y < -50) flores.splice(i, 1);
+                    if (f.y < -50) partículas.splice(i, 1);
                 });
-                requestAnimationFrame(loop);
+                requestAnimationFrame(animar);
             }
-            loop();
+            animar();
         }
     </script>
 </body>
-
 </html>
